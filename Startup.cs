@@ -1,3 +1,4 @@
+using HospitalManagementSystem.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +27,19 @@ namespace HospitalManagementSystem
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddDbContext<ApplicationDbContext>();
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy => {
+                    policy.AllowAnyHeader();
+                    policy.AllowAnyMethod();
+                    policy.AllowAnyOrigin();
+
+                });
+            });
+            services.AddSwaggerGen();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,6 +49,9 @@ namespace HospitalManagementSystem
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors();
+            app.UseSwaggerUI();
+            app.UseSwagger();
 
             app.UseHttpsRedirection();
 
